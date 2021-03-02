@@ -13,7 +13,7 @@
         <a class="navbar-brand" href="/">Tweex Bookstore</a>
         <button class="navbar-toggler"  type="button"data-toggle="collapse"data-target="#navbarSupportedContent">
         <span class="navbar-toggler-icon"></span></button>
-        <div class="collapse navbar-collapse"id="navbarSupportedContent">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item {% if request.path == '/' %} active {% endif %}">
                     <a class="nav-link" href="/">Home</a>
@@ -25,9 +25,7 @@
         </div>
     </nav>
 
-    {% for message in messages %}
-        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-    {% endfor %}
+    
 
     <div class="container">
         {% if request.basket %}

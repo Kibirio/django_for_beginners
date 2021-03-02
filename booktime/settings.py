@@ -37,6 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'webpack_loader',
+    'django_tables2',
+    'django_extensions',
+    'debug_toolbar',
     'main.apps.MainConfig',
 ]
 
@@ -44,6 +48,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'main.middlewares.basket_middleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -139,4 +144,14 @@ MEDIA_URL = "/media/"
 
 AUTH_USER_MODEL = 'main.User'
 
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'BUNDLE_DIR_NAME': 'bundles',
+        'STATS_FILE': os.path.join(BASE_DIR, 'main/static/bundles/webpack-stats.json'),
+    }
+}
+
+INTERNAL_IPS = ['127.0.0.1']
+
+DJANGO_TABLES2_TEMPLATE = 'django_tables2/bootstrap.html'
 

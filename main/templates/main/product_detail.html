@@ -1,4 +1,5 @@
 {% extends 'main/base.html' %}
+{% load render_bundle from webpack_loader %}
 
 {% block content %}
     <h1>Products</h1>
@@ -10,9 +11,9 @@
         <tr>
             <th>Cover images</th>
             <td>
-                {% for image in object.productimage_set.all %}
-                    <img src="{{ image.thumbnail.url }}" alt="cover" />
-                {% endfor %}
+                <div id="imagebox">
+                    Loading...
+                </div>
             </td>
         </tr>
         <tr>
@@ -44,3 +45,23 @@
     </table>
     <a href="{% url 'add_to_basket' %}?product_id={{ object.id }}">Add to basket</a>
 {% endblock %}
+
+{% block js %}
+    {% render_bundle 'imageswitcher' 'js' %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function(event){
+            var images = [
+                {% for image in object.productimage_set.all %}
+                    {
+                        'image': '{{ image.image.url|safe }}',
+                        'thumbnail': '{{ image.thumbnail.url|safe }}'
+                    },
+                {% endfor %}
+            ]
+            ReactDOM.render(React.createElement(ImageBox, {
+                images: images,
+                imageStart: image[0]
+            }), document.getElementById('imagebox'));
+        });
+    </script>
+{% endblock js %}
