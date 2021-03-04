@@ -3,9 +3,9 @@ import logging
 from PIL import Image
 from django.contrib.auth import user_logged_in
 from django.core.files.base import ContentFile
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
-from .models import ProductImage, Basket
+from .models import ProductImage, Basket, OrderLine, Order
 
 THUMBNAIL_SIZE = (300, 300)
 
@@ -47,3 +47,11 @@ def merge_baskets_if_found(sender, user, request, **kwargs):
 			anonymous_basket.user = user
 			anonymous_basket.save()
 			logger.info('Assigned user to basket id %d', anonymous_basket.id)
+
+
+@receiver(post_save, sender=OrderLine)
+def orderline_to_order_status(sender, instance, **kwargs):
+	if not instance.order.lines.filter(status__lt=OrderLine.SENT).exists():
+		logger.info('All lines for order %d have been processed. Marking as done.', instance.order.id)
+		instance.order.status = Order.DONE
+		instance.order.save()

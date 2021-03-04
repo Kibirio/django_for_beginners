@@ -86,6 +86,16 @@ class User(AbstractUser):
 
     objects = UserManager()
 
+    @property  # making function a getter or setter
+    def is_employee(self):
+        return self.is_active and (self.is_superuser or self.is_staff and self.groups.filter(
+            name='Employees').exists())
+
+    @property
+    def is_dispatcher(self):
+        return self.is_active and (self.is_superuser or self.is_staff and self.groups.filter(
+            name='Dispatchers').exists())
+
 
 class Address(models.Model):
     SUPPORTED_COUNTRIES = (

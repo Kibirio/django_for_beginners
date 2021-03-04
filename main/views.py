@@ -52,7 +52,7 @@ class SignUpView(FormView):
     form_class = forms.UserCreationForm
 
     def get_success_url(self):
-        redirect_to = self.request.GET.get('/')
+        redirect_to = self.request.GET.get('next', '/login/')
         return redirect_to
 
     def form_valid(self, form):
